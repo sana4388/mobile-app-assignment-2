@@ -5,11 +5,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../navigation/AppNavigator';
 import posts from '../data/posts';
+import { useTheme } from '../context/ThemeContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PostDetails'>;
 
 export default function PostDetailsScreen({ route }: Props) {
   const { postId, username } = route.params;
+  const { colors } = useTheme();
 
   const post = posts.find(
     (item) => item.id === postId && item.username === username
@@ -17,15 +19,19 @@ export default function PostDetailsScreen({ route }: Props) {
 
   if (!post) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>Post not found.</Text>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.heading, { color: colors.text }]}>
+          Post not found.
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Post Details</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.heading, { color: colors.text }]}>
+        Post Details
+      </Text>
 
       <View style={styles.postHeader}>
         <View style={styles.avatar}>
@@ -34,7 +40,9 @@ export default function PostDetailsScreen({ route }: Props) {
           </Text>
         </View>
 
-        <Text style={styles.username}>@{post.username}</Text>
+        <Text style={[styles.username, { color: colors.text }]}>
+          @{post.username}
+        </Text>
       </View>
 
       <View style={[styles.photo, { backgroundColor: post.color }]}>
@@ -43,20 +51,22 @@ export default function PostDetailsScreen({ route }: Props) {
 
       <View style={styles.actions}>
         <Ionicons name="heart-outline" size={27} color="#E1306C" />
-        <Ionicons name="chatbubble-outline" size={25} color="#222222" />
-        <Ionicons name="paper-plane-outline" size={25} color="#222222" />
+        <Ionicons name="chatbubble-outline" size={25} color={colors.text} />
+        <Ionicons name="paper-plane-outline" size={25} color={colors.text} />
       </View>
 
-      <Text style={styles.likes}>
+      <Text style={[styles.likes, { color: colors.text }]}>
         {post.likes.toLocaleString()} likes
       </Text>
 
-      <Text style={styles.caption}>
+      <Text style={[styles.caption, { color: colors.text }]}>
         <Text style={styles.captionUsername}>@{post.username} </Text>
         {post.caption}
       </Text>
 
-      <Text style={styles.details}>Post ID: {post.id}</Text>
+      <Text style={[styles.details, { color: colors.secondaryText }]}>
+        Post ID: {post.id}
+      </Text>
     </View>
   );
 }
@@ -64,14 +74,12 @@ export default function PostDetailsScreen({ route }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
     padding: 18,
   },
   heading: {
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#222222',
   },
   postHeader: {
     flexDirection: 'row',
@@ -108,7 +116,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: '#222222',
   },
   actions: {
     flexDirection: 'row',
@@ -118,19 +125,16 @@ const styles = StyleSheet.create({
   likes: {
     fontWeight: 'bold',
     marginTop: 12,
-    color: '#222222',
   },
   caption: {
     fontSize: 15,
     marginTop: 10,
-    color: '#333333',
     lineHeight: 22,
   },
   captionUsername: {
     fontWeight: 'bold',
   },
   details: {
-    color: '#888888',
     marginTop: 12,
     fontSize: 12,
   },

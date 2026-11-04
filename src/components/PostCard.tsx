@@ -1,6 +1,7 @@
 
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 type PostCardProps = {
   username: string;
@@ -19,8 +20,18 @@ export default function PostCard({
   color,
   onPress,
 }: PostCardProps) {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          borderBottomColor: colors.border,
+        },
+      ]}
+    >
       {/* Post Header */}
       <View style={styles.postHeader}>
         <Pressable style={styles.userInfo} onPress={onPress}>
@@ -30,11 +41,13 @@ export default function PostCard({
             </Text>
           </View>
 
-          <Text style={styles.username}>@{username}</Text>
+          <Text style={[styles.username, { color: colors.text }]}>
+            @{username}
+          </Text>
         </Pressable>
 
         <Pressable style={styles.menuButton}>
-          <Ionicons name="ellipsis-horizontal" size={23} color="#222222" />
+          <Ionicons name="ellipsis-horizontal" size={23} color={colors.text} />
         </Pressable>
       </View>
 
@@ -49,28 +62,30 @@ export default function PostCard({
       <View style={styles.actions}>
         <View style={styles.leftActions}>
           <Pressable style={styles.actionButton}>
-            <Ionicons name="heart-outline" size={27} color="#222222" />
+            <Ionicons name="heart-outline" size={27} color={colors.text} />
           </Pressable>
 
           <Pressable style={styles.actionButton}>
-            <Ionicons name="chatbubble-outline" size={25} color="#222222" />
+            <Ionicons name="chatbubble-outline" size={25} color={colors.text} />
           </Pressable>
 
           <Pressable style={styles.actionButton}>
-            <Ionicons name="paper-plane-outline" size={25} color="#222222" />
+            <Ionicons name="paper-plane-outline" size={25} color={colors.text} />
           </Pressable>
         </View>
 
         <Pressable>
-          <Ionicons name="bookmark-outline" size={25} color="#222222" />
+          <Ionicons name="bookmark-outline" size={25} color={colors.text} />
         </Pressable>
       </View>
 
       {/* Post Information */}
       <View style={styles.postInfo}>
-        <Text style={styles.likes}>{likes.toLocaleString()} likes</Text>
+        <Text style={[styles.likes, { color: colors.text }]}>
+          {likes.toLocaleString()} likes
+        </Text>
 
-        <Text style={styles.caption}>
+        <Text style={[styles.caption, { color: colors.text }]}>
           <Text style={styles.captionUsername}>@{username} </Text>
           {caption}
         </Text>
@@ -86,12 +101,9 @@ export default function PostCard({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
-    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
     paddingBottom: 12,
   },
-
   postHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -99,12 +111,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
   },
-
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   avatar: {
     width: 38,
     height: 38,
@@ -115,36 +125,29 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: '#E1306C',
   },
-
   avatarText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#E1306C',
   },
-
   username: {
     fontSize: 14,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: '#222222',
   },
-
   menuButton: {
     padding: 5,
   },
-
   photo: {
     height: 260,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   photoTitle: {
     fontSize: 25,
     fontWeight: 'bold',
     color: '#333333',
   },
-
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -152,39 +155,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingTop: 12,
   },
-
   leftActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 17,
   },
-
   actionButton: {
     padding: 2,
   },
-
   postInfo: {
     paddingHorizontal: 14,
     paddingTop: 8,
   },
-
   likes: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#222222',
   },
-
   caption: {
     fontSize: 14,
     marginTop: 5,
     lineHeight: 20,
-    color: '#333333',
   },
-
   captionUsername: {
     fontWeight: 'bold',
   },
-
   tapText: {
     paddingTop: 7,
     color: '#888888',

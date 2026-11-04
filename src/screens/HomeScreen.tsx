@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import PostCard from '../components/PostCard';
 import posts from '../data/posts';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { useTheme } from '../context/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -15,25 +16,30 @@ type NavigationProp = NativeStackNavigationProp<
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const { colors } = useTheme();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       {/* App Header */}
       <View style={styles.header}>
         <Text style={styles.logo}>Everyday</Text>
 
         <View style={styles.headerIcons}>
           <Pressable style={styles.iconButton}>
-            <Ionicons name="heart-outline" size={26} color="#222222" />
+            <Ionicons name="heart-outline" size={26} color={colors.text} />
           </Pressable>
 
           <Pressable style={styles.iconButton}>
-            <Ionicons name="chatbubble-outline" size={25} color="#222222" />
+            <Ionicons name="chatbubble-outline" size={25} color={colors.text} />
           </Pressable>
         </View>
       </View>
 
-      <Text style={styles.heading}>Your Feed</Text>
+      <Text style={[styles.heading, { color: colors.text }]}>
+        Your Feed
+      </Text>
 
       {/* Stories */}
       <View style={styles.storyRow}>
@@ -45,7 +51,9 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            <Text style={styles.storyName}>{name}</Text>
+            <Text style={[styles.storyName, { color: colors.text }]}>
+              {name}
+            </Text>
           </View>
         ))}
       </View>
@@ -74,10 +82,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
     width: '100%',
   },
-
   header: {
     width: '100%',
     flexDirection: 'row',
@@ -87,41 +93,34 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 12,
   },
-
   logo: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#E1306C',
   },
-
   headerIcons: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 'auto',
     gap: 18,
   },
-
   iconButton: {
     padding: 4,
   },
-
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
     marginHorizontal: 18,
     marginTop: 8,
   },
-
   storyRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 18,
   },
-
   story: {
     alignItems: 'center',
   },
-
   storyCircle: {
     width: 58,
     height: 58,
@@ -132,13 +131,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#E1306C',
   },
-
   storyInitial: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#E1306C',
   },
-
   storyName: {
     marginTop: 5,
     fontSize: 12,

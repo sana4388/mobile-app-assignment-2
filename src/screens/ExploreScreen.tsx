@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 const posts = [
   { id: '1', title: 'Travel', color: '#D9B8A7' },
@@ -24,27 +25,32 @@ const posts = [
 
 export default function ExploreScreen() {
   const [search, setSearch] = useState('');
+  const { colors } = useTheme();
 
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Heading */}
-      <Text style={styles.heading}>Explore</Text>
-      <Text style={styles.description}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
+      <Text style={[styles.heading, { color: colors.text }]}>
+        Explore
+      </Text>
+
+      <Text style={[styles.description, { color: colors.secondaryText }]}>
         Discover new interests and inspiration.
       </Text>
 
       {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={21} color="#888888" />
+      <View style={[styles.searchContainer, { backgroundColor: colors.input }]}>
+        <Ionicons name="search" size={21} color={colors.secondaryText} />
 
         <TextInput
-          style={styles.search}
+          style={[styles.search, { color: colors.text }]}
           placeholder="Search topics..."
-          placeholderTextColor="#999999"
+          placeholderTextColor={colors.secondaryText}
           value={search}
           onChangeText={setSearch}
         />
@@ -53,7 +59,7 @@ export default function ExploreScreen() {
           <Ionicons
             name="close-circle"
             size={20}
-            color="#888888"
+            color={colors.secondaryText}
             onPress={() => setSearch('')}
           />
         )}
@@ -61,8 +67,11 @@ export default function ExploreScreen() {
 
       {/* Categories */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.subheading}>Discover something new</Text>
-        <Text style={styles.categoryCount}>
+        <Text style={[styles.subheading, { color: colors.text }]}>
+          Discover something new
+        </Text>
+
+        <Text style={[styles.categoryCount, { color: colors.secondaryText }]}>
           {filteredPosts.length} topics
         </Text>
       </View>
@@ -82,7 +91,9 @@ export default function ExploreScreen() {
           </View>
         )}
         ListEmptyComponent={
-          <Text style={styles.empty}>No topics found. Try another search.</Text>
+          <Text style={[styles.empty, { color: colors.secondaryText }]}>
+            No topics found. Try another search.
+          </Text>
         }
       />
     </ScrollView>
@@ -92,58 +103,43 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
     padding: 15,
   },
-
   heading: {
     fontSize: 29,
     fontWeight: 'bold',
-    color: '#222222',
     marginTop: 10,
   },
-
   description: {
     fontSize: 14,
-    color: '#777777',
     marginTop: 5,
     marginBottom: 20,
   },
-
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F3F3',
     borderRadius: 12,
     paddingHorizontal: 13,
     height: 48,
   },
-
   search: {
     flex: 1,
     paddingHorizontal: 10,
     fontSize: 15,
-    color: '#222222',
   },
-
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 18,
   },
-
   subheading: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#222222',
   },
-
   categoryCount: {
     fontSize: 12,
-    color: '#888888',
   },
-
   tile: {
     flex: 1,
     height: 125,
@@ -153,22 +149,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
   },
-
   tileIcon: {
     marginBottom: 9,
   },
-
   tileText: {
     fontWeight: 'bold',
     color: '#333333',
     textAlign: 'center',
     fontSize: 13,
   },
-
   empty: {
     padding: 15,
-    color: '#777777',
     textAlign: 'center',
   },
 });
-
